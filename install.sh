@@ -121,6 +121,15 @@ else
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.orig
 fi
 
+## Enable SSL on Nginx
+cat /etc/nginx/sites-available/default.orig | sed s/'#listen 443 ssl default_server;'/'listen 443 ssl default_server;'/g |\
+sed s/'#listen \[::\]:443 ssl default_server;'/'listen \[::\]:443 ssl default_server;'/g |\
+sed s@'# include snippets/snakeoil.conf;'@'include snippets/snakeoil.conf;' |\
+sudo tee /etc/nginx/sites-available/default
+
+## Restart Nginx
+sudo systemctl restart nginx.service
+
 ## Setup IP MASQUERADING for VPN(s) with IPTABLES
 sudo iptables -t nat -A POSTROUTING -o $default_iface -j MASQUERADE
 
