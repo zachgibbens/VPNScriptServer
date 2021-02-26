@@ -130,6 +130,9 @@ sudo tee /etc/nginx/sites-available/default
 ## Restart Nginx
 sudo systemctl restart nginx.service
 
+## Install Tinyproxy, Stunnel, Tor, Privoxy, Shadowsocks-libev and obfs4proxy
+sudo apt -y install tinyproxy stunnel4 tor privoxy shadowsocks-libev obfs4proxy
+
 ## Setup IP MASQUERADING for VPN(s) with IPTABLES
 sudo iptables -t nat -A POSTROUTING -o $default_iface -j MASQUERADE
 
