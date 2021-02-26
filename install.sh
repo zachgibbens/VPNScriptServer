@@ -112,6 +112,15 @@ sudo systemctl restart ocserv.service
 ##Install Nginx
 sudo apt -y install nginx-full
 
+## Backup Nginx's default sites file
+FILE=/etc/nginx/sites-available/default.orig
+if [[ -f "$FILE" ]]
+then
+echo file exists, not copying.
+else
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.orig
+fi
+
 ## Setup IP MASQUERADING for VPN(s) with IPTABLES
 sudo iptables -t nat -A POSTROUTING -o $default_iface -j MASQUERADE
 
