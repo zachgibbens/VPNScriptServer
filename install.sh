@@ -27,6 +27,11 @@ sudo apt -y full-upgrade
 ##Install Etckeeper, mainly so we have a record and a way to revert changes, just in case anything goes wrong.
 #sudo apt -y install etckeeper
 
+## Install and configure unattended-upgrades
+echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | sudo debconf-set-selections
+sudo apt -y install unattended-upgrades
+sudo dpkg-reconfigure -fnoninteractive unattended-upgrades
+
 ## Install DNSMasq as our local DNS Server, we'll also use this for the various VPNs and proxies we install later.
 sudo apt -y install dnsmasq
 
