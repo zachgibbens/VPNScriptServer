@@ -109,6 +109,9 @@ echo $RANDPASSWD | sudo ocpasswd -c /etc/ocserv/ocpasswd $username
 ##Restart ocserv
 sudo systemctl restart ocserv.service
 
+##Install Nginx
+sudo apt -y install nginx-full
+
 ## Setup IP MASQUERADING for VPN(s) with IPTABLES
 sudo iptables -t nat -A POSTROUTING -o $default_iface -j MASQUERADE
 
