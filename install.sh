@@ -124,7 +124,7 @@ fi
 ## Enable SSL on Nginx
 cat /etc/nginx/sites-available/default.orig | sed s/'#listen 443 ssl default_server;'/'listen 4443 ssl default_server;'/g |\
 sed s/'#listen \[::\]:443 ssl default_server;'/'listen \[::\]:4443 ssl default_server;'/g |\
-sed s@'# include snippets/snakeoil.conf;'@'include snippets/snakeoil.conf;' |\
+sed s@'# include snippets/snakeoil.conf;'@'include snippets/snakeoil.conf;'@g |\
 sudo tee /etc/nginx/sites-available/default
 
 ## Restart Nginx
