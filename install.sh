@@ -12,6 +12,7 @@ OCSERVPASSWD=$(openssl rand -hex 16)
 OCSERVPASSWD=password
 SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
 SHADOWSOCKSPASSWD=password
+#SHADOWSOCKSPORT=$((1025 + $RANDOM % 65534))
 SHADOWSOCKSPORT=8389
 
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
