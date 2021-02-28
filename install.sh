@@ -12,6 +12,8 @@ OCSERVPASSWD=$(openssl rand -hex 16)
 OCSERVPASSWD=password
 SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
 SHADOWSOCKSPASSWD=password
+SHADOWSOCKSPORT=8389
+
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
 default_iface=$(awk '$2 == 00000000 { print $1 }' /proc/net/route)
 
@@ -138,6 +140,24 @@ sudo systemctl restart nginx.service
 
 ## Install Tinyproxy, Stunnel, Tor, Privoxy, Shadowsocks-libev and obfs4proxy
 sudo apt -y install tinyproxy stunnel4 tor privoxy shadowsocks-libev obfs4proxy
+
+##Backup config.json for shadowsocks-libev
+FILE=/etc/shadowsocks-libev/config.json.orig
+if [[ -f "$FILE" ]]
+then
+echo file exists, not copying.
+else
+sudo cp /etc/shadowsocks-libev/config.json /etc/shadowsocks-libev/config.json.orig
+fi
+
+## Copy our shadowsocks config and use random port and password.
+sudo cat ./shadowsocks-config.json |\
+sed s/'"password":"ExamplePassword",'/'"password":"'$SHADOWSOCKSPASSWD\",/g |\
+sed s/'"server_port":8388,'/'"server_port":'$SHADOWSOCKSPORT,/g |\
+sudo tee /etc/shadowsocks-libev/config.json
+
+## Restart shadowsocks-libev
+sudo systemctl restart shadowsocks-libev.service
 
 ## Setup IP MASQUERADING for VPN(s) with IPTABLES
 sudo iptables -t nat -A POSTROUTING -o $default_iface -j MASQUERADE
