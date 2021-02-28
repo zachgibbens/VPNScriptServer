@@ -7,10 +7,11 @@
 #Version 0.0.001							#
 #########################################################################
 ## Create a random password.
-RANDPASSWD=$(openssl rand -hex 16)
+OCSERVPASSWD=$(openssl rand -hex 16)
 ## Set a static password (Please only use for testing and otherwise leave commented out)
-RANDPASSWD=password
-
+OCSERVPASSWD=password
+SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
+SHADOWSOCKSPASSWD=password
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
 default_iface=$(awk '$2 == 00000000 { print $1 }' /proc/net/route)
 
@@ -109,7 +110,7 @@ sudo sed -i '$a net.ipv4.tcp_congestion_control=bbr' /etc/sysctl.conf
 sudo sysctl -p
 
 ##Create user account file
-echo $RANDPASSWD | sudo ocpasswd -c /etc/ocserv/ocpasswd $username
+echo $OCSERVPASSWD | sudo ocpasswd -c /etc/ocserv/ocpasswd $username
 
 ##Restart ocserv
 sudo systemctl restart ocserv.service
