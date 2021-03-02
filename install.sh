@@ -6,8 +6,27 @@
 #License is TBD at this time.						#
 #Version 0.0.001							#
 #########################################################################
+## Set a cleanup function, in case we need to kill the background processes.
+function clean_up {
+
+    # Perform program exit housekeeping
+    kill $dhparam_PID
+    killall openssl
+    exit
+}
+
+trap clean_up SIGHUP SIGINT SIGTERM
+## Have OpenSSL start generating the Diffie-Hellman file in the background.
+#openssl dhparam -out dh8192.pem 8192 >/dev/null 2>&1 &
+#openssl dhparam -out dh4096.pem 4096 >/dev/null 2>&1 &
+#openssl dhparam -out dh2048.pem 2048 >/dev/null 2>&1 &
+#openssl dhparam -out dh1024.pem 1024 >/dev/null 2>&1 &
+openssl dhparam -out dh512.pem 512 >/dev/null 2>&1 &
+dhparam_PID=$1
+
 ## Create a random password.
 OCSERVPASSWD=$(openssl rand -hex 16)
+
 ## Set a static password (Please only use for testing and otherwise leave commented out)
 OCSERVPASSWD=password
 SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
