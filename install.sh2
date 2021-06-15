@@ -28,15 +28,11 @@ dhparam_PID=$1
 OCSERVPASSWD=$(openssl rand -hex 16)
 
 ## Set a static password (Please only use for testing and otherwise leave commented out)
-#OCSERVPASSWD=password
+OCSERVPASSWD=password
 SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
-#SHADOWSOCKSPASSWD=password
-SHADOWSOCKSPORT=$((1025 + $RANDOM % 65534))
+SHADOWSOCKSPASSWD=password
+#SHADOWSOCKSPORT=$((1025 + $RANDOM % 65534))
 SHADOWSOCKSPORT=8389
-
-echo "Cisco Anyconnect: $OCSERVPASSWD" > Passwords.txt
-echo "Shadowsocks: $SHADOWSOCKSPASSWD" >> Passwords.txt
-echo ""
 
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
 default_iface=$(awk '$2 == 00000000 { print $1 }' /proc/net/route)
@@ -57,7 +53,7 @@ sudo apt -y install etckeeper
 ## Install and configure unattended-upgrades
 echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | sudo debconf-set-selections
 sudo apt -y install unattended-upgrades
-#sudo dpkg-reconfigure -fnoninteractive unattended-upgrades
+sudo dpkg-reconfigure -fnoninteractive unattended-upgrades
 
 ## Install DNSMasq as our local DNS Server, we'll also use this for the various VPNs and proxies we install later.
 sudo apt -y install dnsmasq
@@ -108,7 +104,7 @@ cat /etc/ocserv/ocserv.conf.orig | grep -v ^# | grep -v ^$ | \
 sed s/^tcp-port\ =\ 443/tcp-port\ =\ 8443/g | \
 
 ##Have ocserv only listen on localhost
-sed '$a listen-host = 127.0.0.1' | \
+#sed '$a listen-host = 127.0.0.1' | \
 
 ## By default ocserv uses unix accounts above UID 1000, I'd rather it just get it's account info from a file.
 sed s#'auth = "pam\[gid-min=1000\]"'#'auth = "plain\[passwd=/etc/ocserv/ocpasswd\]"'#g | \
