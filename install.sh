@@ -32,11 +32,11 @@ OCSERVPASSWD=$(openssl rand -hex 16)
 SHADOWSOCKSPASSWD=$(openssl rand -base64 16)
 #SHADOWSOCKSPASSWD=password
 SHADOWSOCKSPORT=$((1025 + $RANDOM % 65534))
-SHADOWSOCKSPORT=8389
+#SHADOWSOCKSPORT=8389
 
 echo "Cisco Anyconnect: $OCSERVPASSWD" > Passwords.txt
 echo "Shadowsocks: $SHADOWSOCKSPASSWD" >> Passwords.txt
-echo ""
+echo "Shadowsocks Port: $SHADWOSOCKSPORT" >> Passwords.txt
 
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
 default_iface=$(awk '$2 == 00000000 { print $1 }' /proc/net/route)
@@ -194,3 +194,4 @@ sudo iptables -A INPUT ! -i $default_iface -j ACCEPT
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt -y install iptables-persistent
+sudo apt -y install v2ray
