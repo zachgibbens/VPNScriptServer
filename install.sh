@@ -36,7 +36,7 @@ SHADOWSOCKSPORT=$((1025 + $RANDOM % 65534))
 
 echo "Cisco Anyconnect: $OCSERVPASSWD" > Passwords.txt
 echo "Shadowsocks: $SHADOWSOCKSPASSWD" >> Passwords.txt
-echo "Shadowsocks Port: $SHADWOSOCKSPORT" >> Passwords.txt
+echo "Shadowsocks Port: $SHADOWSOCKSPORT" >> Passwords.txt
 
 ##We'll want to know what our default interface is now, before we modify anything. This'll store it in a variable for firewall rules later.
 default_iface=$(awk '$2 == 00000000 { print $1 }' /proc/net/route)
@@ -185,7 +185,7 @@ fi
 ## Copy our shadowsocks config and use random port and password.
 sudo cat /etc/shadowsocks-libev/config.json.orig |\
 sed '/\"password\":\"/c\ \ \ \ \"password\":\"'$SHADOWSOCKSPASSWD\"'' |\
-sed '/\"server\":/c\ \ \ \ \"server\"\":\[\"::\",\ \"0.0.0.0\"\],' |\
+sed '/\"server\":/c\ \ \ \ \"server\":\[\"::\",\ \"0.0.0.0\"\],' |\
 sed s/'"server_port":8388,'/'"server_port":'$SHADOWSOCKSPORT,/g |\
 sudo tee /etc/shadowsocks-libev/config.json
 
