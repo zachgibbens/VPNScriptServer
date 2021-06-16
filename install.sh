@@ -184,7 +184,8 @@ fi
 
 ## Copy our shadowsocks config and use random port and password.
 sudo cat /etc/shadowsocks-libev/config.json.orig |\
-sed s/'"password":"ExamplePassword",'/'"password":"'$SHADOWSOCKSPASSWD\",/g |\
+sed '/\"password\":\"/c\ \ \ \ \"password\":\"'$SHADOWSOCKSPASSWD\"'' |\
+#sed s/'"password":"ExamplePassword",'/'"password":"'$SHADOWSOCKSPASSWD\",/g |\
 sed s/'"server_port":8388,'/'"server_port":'$SHADOWSOCKSPORT,/g |\
 sudo tee /etc/shadowsocks-libev/config.json
 
