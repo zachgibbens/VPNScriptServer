@@ -61,6 +61,14 @@ sudo apt -y install unattended-upgrades
 
 ## Install DNSMasq as our local DNS Server, we'll also use this for the various VPNs and proxies we install later.
 sudo apt -y install dnsmasq
+## Make backup of original config
+FILE=/etc/dnsmasq.conf.orig
+if [[ -f "$FILE" ]]
+then
+echo file exists, not copying.
+else
+sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+fi
 
 ## Make sure this server is using the DNS Server.
 # This section is has yet to be built.
