@@ -204,3 +204,4 @@ echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo deb
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt -y install iptables-persistent
 sudo apt -y install v2ray
+sudo apt -y install dns2tcp
